@@ -3,7 +3,7 @@ const loadPhones = async (searchText, dataLimit) => {
   const res = await fetch(url);
 
   const data = await res.json();
-  
+
   displayPhones(data.data, dataLimit);
 };
 
@@ -18,7 +18,7 @@ const displayPhones = (phones, dataLimit) => {
   } else {
     showAll.classList.add("d-block");
   }
-  
+
   // display no phones found
   const noPhone = document.getElementById("no-found-message");
   if (phones.length === 0) {
@@ -28,7 +28,6 @@ const displayPhones = (phones, dataLimit) => {
   }
   // display all phones
   phones.forEach((phone) => {
-     console.log(phone);
     const phoneDiv = document.createElement("div");
     phoneDiv.classList.add("col");
     phoneDiv.innerHTML = `
@@ -87,7 +86,8 @@ document.getElementById("btn-show-all").addEventListener("click", function () {
 });
 
 const loadPhoneDetails = async (id) => {
-  const url = `www.openapi.programming-hero.com/api/phone/${id}`;
+  
+  const url = `https://openapi.programming-hero.com/api/phone/${id}`;
   const res = await fetch(url);
   const data = await res.json();
   displayPhoneDetails(data.data);
@@ -98,19 +98,20 @@ const displayPhoneDetails = (phone) => {
   const modalTitle = document.getElementById("phoneDetailModalLabel");
   modalTitle.innerText = phone.name;
   const phoneDetails = document.getElementById("phone-details");
-  console.log(phone.mainFeatures.sensors[0]);
+ 
   phoneDetails.innerHTML = `
-        <p>Release Date: ${phone.releaseDate}</p>
-        <p>Storage: ${phone.mainFeatures}</p>
+        <p>Release Date: ${phone.releaseDate?phone.releaseDate: "No Release Date available"}</p>
+        <p>Storage: ${phone.mainFeatures.storage}</p>
         <p>Others: ${
-          phone.others ? phone.others.Bluetooth : "No Bluetooth Information"
+          phone.others.Bluetooth ? phone.others.Bluetooth : "No Bluetooth Information"
         }</p>
         <p>Sensor: ${
-          phone.mainFeatures.sensors
+          phone.mainFeatures.sensors[0]
             ? phone.mainFeatures.sensors[0]
             : "no sensor"
         }</p>
     `;
+
 };
 
 // loadPhones('apple');
